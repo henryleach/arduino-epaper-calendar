@@ -1,5 +1,6 @@
 // GxEPD2__with_two_fonts.ino by Henry Leach, adapted from
 // GxEPD2_HelloWorld.ino by Jean-Marc Zingg
+// For testing on Wavesshares 2.9" epaper display.
 // www.henryleach.com
 
 // Wiring for AVR, UNO, NANO etc.
@@ -9,7 +10,7 @@
 #include <GxEPD2_3C.h> // including both doesn't use more code or ram
 
 // Use two fonts for two different text sizes. 
-#include <Fonts/FreeSansBold24pt7b.h>
+#include <Fonts/FreeSansBold24pt7b.h> //Large font uses a lot of memory
 #include <Fonts/FreeSansBold12pt7b.h>
 
 // select the display class and display driver class in the following file (new style):
@@ -21,7 +22,7 @@ uint16_t counter = 0;
 int16_t tbx, tby;
 uint16_t tbw, tbh;
 
-
+// Run once
 void setup()
 {
   display.init();
@@ -33,6 +34,8 @@ void loop() {
   printCounter();
 }
 
+
+// Print message in large text across the top of the screen
 void printGreeting()
 {
   display.setRotation(1); //0 is 'portrait'
@@ -58,6 +61,7 @@ void printCounter(){
 
   char countText[15];
   snprintf(countText, sizeof(countText), "Counter: %i", counter);
+  // Stop the counter going forever if left on
   if(counter >= 100){
     counter = 0; 
   } else {
@@ -78,8 +82,7 @@ void printCounter(){
     display.print(countText);
   }
   while (display.nextPage());
-  // and put the display to sleep,
-  // this should help prevent burn in.
+  // and put the display to sleep, even if it's only for a short time
   display.hibernate();
   delay(500);
 }
