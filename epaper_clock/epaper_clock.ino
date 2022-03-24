@@ -1,3 +1,6 @@
+#include <U8g2_for_Adafruit_GFX.h>
+#include <u8g2_fonts.h>
+
 // Simple Clock with date on epaper screen with Arduino
 // www.henryleach.com
 
@@ -6,14 +9,14 @@
 
 #include <GxEPD2_BW.h> // including both doesn't use more code or ram
 #include <GxEPD2_3C.h> // including both doesn't use more code or ram
-#include <Fonts/FreeSansBold24pt7b.h> //this uses a lot of memory.
 #include <Fonts/FreeSansBold12pt7b.h>
 #include "GxEPD2_display_selection_new_style.h"
-
 #include <LowPower.h> // https://github.com/rocketscream/Low-Power
 
+U8G2_FOR_ADAFRUIT_GFX u8g2Fonts;  // font constructor
+
 DS3232RTC myRTC;  // create the RTC object
-const uint8_t wakeUpPin(2); // connect Arduino pin 2 to RTC's SQW pin.
+const uint8_t wakeUpPin(2); // connect Arduino pin D2 to RTC's SQW pin.
 char dateString[18]; //longest is "31 September 2000" plus terminator.
 char timeString[6];
 char yearString[5];
@@ -31,6 +34,9 @@ void setup()
   } else {
     Serial.println("RTC has set the system time");
   }
+
+  u8g2Fonts.begin(display); //connect the u8g2
+
 
   // initialize the alarms to known values, clear the alarm flags, clear the alarm interrupt flags
   myRTC.setAlarm(DS3232RTC::ALM1_MATCH_DATE, 0, 0, 0, 1);
@@ -55,7 +61,6 @@ void setup()
 void displayDate()
 {
   display.init();
-  //time_t t = myRTC.get(); //get the time from the RTC
 
   //Now print the date in smaller text below.
   //Create the date string
@@ -91,15 +96,7 @@ void displayDate()
 // Displays the time in the top half of the screen, as a partial refresh
 void displayTime()
 {
-
-  //time_t t = myRTC.get(); //get the time from the RTC
   
-  display.setRotation(1); //0 is 'portrait'
-  display.setFont(&FreeSansBold24pt7b);
-  display.setTextColor(GxEPD_BLACK);
-  
-  int16_t tbx, tby;
-  uint16_t tbw, tbh;
   itoa(hour(t), tempTime, 10);
   if (hour(t) < 10) {
     // zero pad
@@ -120,15 +117,21 @@ void displayTime()
     strcat(timeString, tempTime);
   }
 
-  display.getTextBounds(timeString, 0, 0, &tbx, &tby, &tbw, &tbh);
-  uint16_t x = ((display.width() - tbw) / 2) - tbx;  // centres the text
-  uint16_t y = 50; //top half
+  u8g2Fonts.setForegroundColor(GxEPD_BLACK);
+  u8g2Fonts.setBackgroundColor(GxEPD_WHITE);
+  //Only numbers and symbols to save space.https://github.com/olikraus/u8g2/wiki/fntlist99#50-pixel-height
+  u8g2Fonts.setFont(u8g2_font_logisoso50_tn);
+  
+  uint16_t x = ((display.width() - u8g2Fonts.getUTF8Width(timeString)) / 2);  // centres the text
+  Serial.println(x);
+  uint16_t y = 60; //top half
+
   display.setPartialWindow(0, 0, display.width(), display.height() / 2);
   display.firstPage();
   do // Print the upper part of the screen
   {
-    display.setCursor(x, y);
-    display.print(timeString);
+    u8g2Fonts.setCursor(x, y);
+    u8g2Fonts.print(timeString);
   }
   while (display.nextPage());
   display.hibernate();

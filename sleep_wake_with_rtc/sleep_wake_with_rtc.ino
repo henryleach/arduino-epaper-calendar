@@ -5,7 +5,7 @@
 #include <LowPower.h> // https://github.com/rocketscream/Low-Power
 
 DS3232RTC myRTC;  // create the RTC object
-const uint8_t wakeUpPin(2); // connect Arduino pin 2 to RTC's SQW pin.
+const uint8_t wakeUpPin(2); // connect Arduino pin Digital 2 to RTC's SQW pin.
 //const time_t alarmInterval(10); //alarm interval in seconds
 
 void setup()
