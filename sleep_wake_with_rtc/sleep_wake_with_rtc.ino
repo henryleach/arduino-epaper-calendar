@@ -6,7 +6,6 @@
 
 DS3232RTC myRTC;  // create the RTC object
 const uint8_t wakeUpPin(2); // connect Arduino pin Digital 2 to RTC's SQW pin.
-//const time_t alarmInterval(10); //alarm interval in seconds
 
 void setup()
 {
@@ -42,20 +41,18 @@ void loop()
   
   time_t t = myRTC.get(); //get the time from the RTC
   char dateTime[40];
-  char notDay[30];
-  snprintf(notDay,
-           sizeof(notDay),
-           "%i %s %i %02i:%02i:%02i",
+  char currentWeekday[10]; //long enough for Wednesday plus terminator.
+  strcpy(currentWeekday, dayStr(weekday(t)));
+  snprintf(dateTime,
+           sizeof(dateTime),
+           "%s %i %s %i %02i:%02i:%02i",
+           currentWeekday,
            day(t),
            monthStr(month(t)),
            year(t),
            hour(t),
            minute(t),
            second(t));
-
-  strcpy(dateTime, dayStr(weekday(t)));
-  strcat(dateTime, " ");
-  strcat(dateTime, notDay);
 
   Serial.println(dateTime);
   delay(500); //if this isn't here the arduino seems to go to sleep before printing everything to serial
@@ -87,5 +84,7 @@ void setAlarm(){
 
 void alarmIsr()
 {
+  // Need an dummy function for the interrupt, as we don't
+  // actually need it to do anything.
   Serial.println("Interrupt Triggered");
 }
