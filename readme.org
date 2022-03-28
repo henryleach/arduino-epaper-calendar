@@ -2,13 +2,13 @@
 
 Collection of four sketchs for creating an epaper clock or calendar with an Arduino (Uno or Nano) and a Waveshares 2.9" epaper screen.
 
-* sleep_wake_with_rtc
-
-Use a DS3231 Real Time Clock module's alarm function, and the low-power library to put the Arduino to sleep, and then wake it again.
-
 * GxEPD2_with_two_fonts
 
-Test the GxEPD2 library for displying graphics on the epaper screen. Specifically showing how to use two different fonts on the same display
+Test the GxEPD2 library for displying graphics on the epaper screen. Specifically showing how to use two different fonts on the same display. See article [Arduino E-paper Screen](https://www.henryleach.com/2022/03/arduino-e-paper-screen/) for more details.
+
+* sleep_wake_with_rtc
+
+Use a DS3231 Real Time Clock module's alarm function, and the low-power library to put the Arduino to sleep, and then wake it again. See article [Arduino & Real-Time Clock](https://www.henryleach.com/2022/03/arduino-real-time-clock/) for more details.
 
 * epaper_clock
 
