@@ -40,6 +40,8 @@ void loop()
   setSyncProvider(myRTC.get);
   
   time_t t = myRTC.get(); //get the time from the RTC
+  t+=3600;
+  Serial.println(t);
   char dateTime[40];
   char currentWeekday[10]; //long enough for Wednesday plus terminator.
   strcpy(currentWeekday, dayStr(weekday(t)));

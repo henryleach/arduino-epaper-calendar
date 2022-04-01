@@ -1,42 +1,65 @@
 #+TITLE: Arduino ePaper Clock Calendar Sketches
 
-Collection of four sketchs for creating an epaper clock or calendar with an Arduino (Uno or Nano) and a Waveshares 2.9" epaper screen.
-
-* GxEPD2_with_two_fonts
-
-Test the GxEPD2 library for displying graphics on the epaper screen. Specifically showing how to use two different fonts on the same display. See article [Arduino E-paper Screen](https://www.henryleach.com/2022/03/arduino-e-paper-screen/) for more details.
-
-* sleep_wake_with_rtc
-
-Use a DS3231 Real Time Clock module's alarm function, and the low-power library to put the Arduino to sleep, and then wake it again. See article [Arduino & Real-Time Clock](https://www.henryleach.com/2022/03/arduino-real-time-clock/) for more details.
-
-* epaper_clock
-
-Displays the time, and date, on the epaper screen, updating every minute. Puts the Arduino to sleep in between
-
-* epaper_weekday_calendar
-
-Shows the day of the week in large letters across the top, and the date below in a smaller font. Updates daily at midnight, sleeps the Arduino in between. 
+Collection of four sketches for creating an e-paper (e-ink) clock or calendar with an Arduino (Uno or Nano) and a Waveshares 2.9" e-paper screen.
 
 * Wiring
 
-All the above sketches assume the Arduino is wired as follows:
+All the sketches assume the Arduino is wired as follows:
 
-   | DS3231 | Header Wire Colour | Arduino                                      |
-   |--------+--------------------+----------------------------------------------|
-   | SCL    |                    | A5                                           |
-   | SDA    |                    | A4                                           |
-   | VCC    |                    | 5V                                           |
-   | GND    |                    | GND                                          |
-   | SQW    |                    | 2, For interrupt alarm, set with wakeUpPin() |
-   |--------+--------------------+----------------------------------------------|
-   | Screen |                    |                                              |
-   |--------+--------------------+----------------------------------------------|
-   | BUSY   | Purple             | D7                                           |
-   | DC     | Green              | D8                                           |
-   | RST    | White              | D9                                           |
-   | CS     | Orange             | D10                                          |
-   | DIN    | Blue               | D11                                          |
-   | CLK    | Yellow             | D13                                          |
-   | VCC    | Grey               | 3.3V                                         |
-   | GND    | Brown              | GND                                          |
+   | DS3231      | Header Wire Colour | Arduino                                                   |
+   |-------------+--------------------+-----------------------------------------------------------|
+   | SCL         |                    | A5                                                        |
+   | SDA         |                    | A4                                                        |
+   | VCC         |                    | 5V                                                        |
+   | GND         |                    | GND                                                       |
+   | SQW         |                    | D2, for interrupt alarm, set with wakeUpPin()             |
+   |-------------+--------------------+-----------------------------------------------------------|
+   | Screen      |                    |                                                           |
+   |-------------+--------------------+-----------------------------------------------------------|
+   | BUSY        | Purple             | D7                                                        |
+   | DC          | Green              | D8                                                        |
+   | RST         | White              | D9                                                        |
+   | CS          | Orange             | D10                                                       |
+   | DIN         | Blue               | D11                                                       |
+   | CLK         | Yellow             | D13                                                       |
+   | VCC         | Grey               | 3.3V                                                      |
+   | GND         | Brown              | GND                                                       |
+   |-------------+--------------------+-----------------------------------------------------------|
+   | Arduino GND |                    | D4 (Optional, connect to add 1 hour for daylight savings) |
+
+* GxEPD2_with_two_fonts
+
+Requires:
+- [[https://github.com/ZinggJM/GxEPD2][GxEPD2]]
+Test the GxEPD2 library for displaying graphics on the e-paper screen. Specifically showing how to use two different fonts on the same display. 
+
+See article [[https://www.henryleach.com/2022/03/arduino-e-paper-screen/][Arduino E-paper Screen]] for more details.
+
+* sleep_wake_with_rtc
+
+Requires:
+- [[https://github.com/JChristensen/DS3232RTC][DS3232RTC]]
+- [[https://github.com/rocketscream/Low-Power][LowPower]]
+
+Use a DS3231 Real Time Clock module's alarm function, and the low-power library to put the Arduino to sleep, and then wake it again. 
+
+See article [[https://www.henryleach.com/2022/03/arduino-real-time-clock/][Arduino & Real-Time Clock]] for more details.
+
+* epaper_clock
+
+Requires:
+- [[https://github.com/JChristensen/DS3232RTC][DS3232RTC]]
+- [[https://github.com/rocketscream/Low-Power][LowPower]]
+- [[https://github.com/ZinggJM/GxEPD2][GxEPD2]]
+- [[https://github.com/olikraus/U8g2_for_Adafruit_GFX][U8g2 for Adafruit GFX]]
+
+Displays the time, and date, on the e-paper screen, updating every minute. Puts the Arduino to sleep in between.
+
+Use the SetSerial example sketch from the DS3232RTC Library (File -> Examples -> DS3232RTC -> SetSerial).
+
+If you need to adjust between winter and summer time (plus 1 hour) set the time to winter time, then connect GND to pin D4, this will add 1 hour to the displayed time.
+
+* epaper_weekday_calendar - In Progress
+
+Shows the day of the week in large letters across the top, and the date below in a smaller font. Updates daily at midnight, sleeps the Arduino in between. 
+
