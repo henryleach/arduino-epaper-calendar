@@ -48,7 +48,7 @@ void setup()
   // configure an interrupt on the falling edge from SQN pin
   pinMode(wakeUpPin, INPUT_PULLUP);
   pinMode(dstPin, INPUT_PULLUP);
-  //t = myRTC.get(); // get the time from the RTC
+
   getDstTime();
   displayDate();
 
@@ -119,7 +119,7 @@ void displayTime()
   u8g2Fonts.setFont(u8g2_font_logisoso50_tn);
   
   uint16_t x = ((display.width() - u8g2Fonts.getUTF8Width(timeString)) / 2); // centres the text
-  uint16_t y = 64; //top half
+  uint16_t y = 62; //top half, depends on font
 
   display.setPartialWindow(0, 0, display.width(), display.height() / 2);
   display.firstPage();
@@ -187,5 +187,4 @@ void getDstTime() {
 void alarmIsr()
 {
   // Need a function for the interrupt, but doesn't have to do anything.
-  Serial.println("Interrupt Triggered");
 }
