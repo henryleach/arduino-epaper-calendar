@@ -25,14 +25,9 @@ time_t t;
 
 void setup()
 {
-  Serial.begin(115200);
+
   myRTC.begin();
   setSyncProvider(myRTC.get); // the function to get the time from the RTC
-  if (timeStatus() != timeSet) {
-    Serial.println("Unable to sync with the RTC");
-  } else {
-    Serial.println("RTC has set the system time");
-  }
 
   u8g2Fonts.begin(display); // connect the u8g2
 
@@ -67,7 +62,6 @@ void displayDate()
   strcat(dateString, monthStr(month(t)));
   strcat(dateString, " ");
   strcat(dateString, yearString);
-  Serial.println(dateString);
   
   display.setRotation(3); //0 is 'portrait'
 
@@ -160,9 +154,9 @@ void loop()
 
   // Disable external pin interrupt on wake up pin.
   detachInterrupt(digitalPinToInterrupt(2));
-  Serial.println("Woke Up!");
+
   if (myRTC.alarm(DS3232RTC::ALARM_1)) {
-    Serial.println("Alarm 1 triggered, and reset");
+    //also clears alarm flag
   }
 
 }
